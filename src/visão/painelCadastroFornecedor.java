@@ -22,13 +22,13 @@ import java.awt.List;
 import java.text.ParseException;
 import java.awt.Button;
 
-public class painelCadastroForncedor extends JFrame {
+public class painelCadastroFornecedor extends JFrame {
 
 	private JPanel contentPane;
 	private JLabel lblCadastroForncedor;
 	private JFormattedTextField txtCodigo;
 	private JLabel lblCodigo;
-	private JComboBox cbxTipo;
+	private JComboBox <String>cbxTipo;
 	private JLabel lblTipo;
 	private JFormattedTextField txtCpfCnpj;
 	private JLabel lblCpfcnpj;
@@ -49,7 +49,7 @@ public class painelCadastroForncedor extends JFrame {
 	private JLabel lblUf;
 	private JFormattedTextField txtNumero;
 	private JLabel Número;
-	private JComboBox cbxUf;
+	private JComboBox <String>cbxUf;
 	private JSeparator separator_2;
 	private JLabel C;
 	private JFormattedTextField txtTelefone;
@@ -61,7 +61,7 @@ public class painelCadastroForncedor extends JFrame {
 	private JSeparator separator_3;
 	private JFormattedTextField txtPesquisa;
 	private JLabel Pesquisar;
-	private JComboBox cbxTipoPesquisa;
+	private JComboBox <String>cbxTipoPesquisa;
 	private List list;
 	private Button btnInserir;
 	private Button btnAlterar;
@@ -72,7 +72,7 @@ public class painelCadastroForncedor extends JFrame {
 	private JLabel lblComplemento;
 	FormataMascaras fm = new FormataMascaras();
 
-	public painelCadastroForncedor(){
+	public painelCadastroFornecedor(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 575, 703);
 		contentPane = new JPanel();
@@ -151,9 +151,9 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return lblCodigo;
 	}
-	public JComboBox getCbxTipo() {
+	public JComboBox <String>getCbxTipo() {
 		if (cbxTipo == null) {
-			cbxTipo = new JComboBox();
+			cbxTipo = new JComboBox<String>();
 			cbxTipo.addItem("-Selecione-");
 			cbxTipo.addItem("CPF");
 			cbxTipo.addItem("CNPJ");
@@ -311,9 +311,9 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return Número;
 	}
-	public JComboBox getCbxUf() {
+	public JComboBox <String>getCbxUf() {
 		if (cbxUf == null) {
-			cbxUf = new JComboBox();
+			cbxUf = new JComboBox<String>();
 			
 			cbxUf.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-Selecione-", "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RS", "SC", "SE", "SP", "TO" }));
 			
@@ -404,9 +404,9 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return Pesquisar;
 	}
-	public JComboBox getCbxTipoPesquisa() {
+	public JComboBox <String>getCbxTipoPesquisa() {
 		if (cbxTipoPesquisa == null) {
-			cbxTipoPesquisa = new JComboBox();
+			cbxTipoPesquisa = new JComboBox<String>();
 			cbxTipoPesquisa.setModel(new DefaultComboBoxModel(new String[] {"-Tipo-", "CPF", "CNPJ", "Nome", "C\u00F3digo"}));
 			cbxTipoPesquisa.setBounds(6, 456, 98, 22);
 		}

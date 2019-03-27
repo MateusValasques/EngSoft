@@ -2,11 +2,11 @@ package controle;
 
 import java.text.ParseException;
 
-import visão.painelCadastroForncedor;
+import visão.painelCadastroFornecedor;
 
 public class Validate_Fornecedor {
 
-	painelCadastroForncedor painel_Cadastro_Fornecedor;
+	painelCadastroFornecedor painel_Cadastro_Fornecedor;
 	String tipo = new String();
 	String cpfcnpj = new String();
 	String nome = new String();
@@ -21,8 +21,8 @@ public class Validate_Fornecedor {
 	String email = new String();
 	String complemento = new String();
 
-	public Validate_Fornecedor(painelCadastroForncedor painel_Cadastro_Fornecedor)
-			throws ParseException {
+	public Validate_Fornecedor(painelCadastroFornecedor painel_Cadastro_Fornecedor)
+			 {
 
 		tipo = (String) painel_Cadastro_Fornecedor.getCbxTipo().getSelectedItem();
 		cpfcnpj = painel_Cadastro_Fornecedor.getTxtCpfCnpj().getText();
@@ -40,7 +40,7 @@ public class Validate_Fornecedor {
 
 	}
 
-	boolean validacao_Fornecedor(painelCadastroForncedor painel_Cadastro_Fornecedor) throws ParseException {
+	boolean validacao_Fornecedor(painelCadastroFornecedor painel_Cadastro_Fornecedor) {
 
 		if ("".equals(painel_Cadastro_Fornecedor.getTxtCpfCnpj().getText())
 				|| "".equals(painel_Cadastro_Fornecedor.getTxtNome().getText())
@@ -53,8 +53,8 @@ public class Validate_Fornecedor {
 				|| "".equals(painel_Cadastro_Fornecedor.getTxtCelular().getText())
 				|| "".equals(painel_Cadastro_Fornecedor.getTxtEmail().getText())
 				|| "".equals(painel_Cadastro_Fornecedor.getTxtComplemento().getText())
-				|| "-Selecione-".equals(this.painel_Cadastro_Fornecedor.getCbxTipo().getSelectedItem())
-				|| "-Selecione-".equals(this.painel_Cadastro_Fornecedor.getCbxUf().getSelectedItem()))
+				|| "-Selecione-".equals(painel_Cadastro_Fornecedor.getCbxTipo().getSelectedItem())
+				|| "-Selecione-".equals(painel_Cadastro_Fornecedor.getCbxUf().getSelectedItem()))
 
 			return false;
 
