@@ -2,6 +2,7 @@ package controle;
 
 import java.util.ArrayList;
 
+import dao.Fornecedor_Dao;
 import modelo.Fornecedor;
 import visão.PainelCadastroCliente;
 import visão.PainelCadastroFuncionario;
@@ -22,8 +23,10 @@ public class Main {
 	public static void main(String[] args) {
 		
 		painel_Cadastro_Forncedor.setVisible(true);
+		painel_Cadastro_Forncedor.setLocation(300,0);
+		Fornecedores = Fornecedor_Dao.read();
 		controladorPainelCadastroFornecedor = new Controlador_Painel_Cadastro_Fornecedor(painel_Cadastro_Forncedor, Fornecedores);
-	
+		
 	}
 	
 

@@ -30,8 +30,8 @@ public class painelCadastroForncedor extends JFrame {
 	private JLabel lblCodigo;
 	private JComboBox cbxTipo;
 	private JLabel lblTipo;
-	private JFormattedTextField txtCpfCnpj;
-	private JLabel lblCpfcnpj;
+	private JFormattedTextField txtCpf;
+	private JLabel lblCpf;
 	private JFormattedTextField txtNome;
 	private JLabel lblNome;
 	private JSeparator separator;
@@ -71,6 +71,8 @@ public class painelCadastroForncedor extends JFrame {
 	private JFormattedTextField txtComplemento;
 	private JLabel lblComplemento;
 	FormataMascaras fm = new FormataMascaras();
+	private JFormattedTextField txtCnpj;
+	private JLabel lblCnpj;
 
 	public painelCadastroForncedor(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -82,13 +84,14 @@ public class painelCadastroForncedor extends JFrame {
 		contentPane.setLayout(null);
 		
 		
+		
 		contentPane.add(getLblCadastroForncedor());
 		contentPane.add(getTxtCodigo());
 		contentPane.add(getLblCodigo());
 		contentPane.add(getCbxTipo());
 		contentPane.add(getLblTipo());
-		contentPane.add(getTxtCpfCnpj());
-		contentPane.add(getLblCpfcnpj());
+		contentPane.add(getTxtCpf());
+		contentPane.add(getLblCpf());
 		contentPane.add(getTxtNome());
 		contentPane.add(getLblNome());
 		contentPane.add(getSeparator());
@@ -127,6 +130,10 @@ public class painelCadastroForncedor extends JFrame {
 		contentPane.add(getBtnCancelar());
 		contentPane.add(getTxtComplemento());
 		contentPane.add(getLblComplemento());
+		contentPane.add(getTxtCnpj());
+		contentPane.add(getLblCnpj());
+		getTxtCpf().setVisible(false);
+		getTxtCnpj().setVisible(false);
 	}
 	public JLabel getLblCadastroForncedor() {
 		if (lblCadastroForncedor == null) {
@@ -139,6 +146,7 @@ public class painelCadastroForncedor extends JFrame {
 	public JFormattedTextField getTxtCodigo() {
 		if (txtCodigo == null) {
 			txtCodigo = new JFormattedTextField();
+			txtCodigo.setEditable(false);
 			txtCodigo.setBounds(10, 89, 163, 20);
 			txtCodigo.setColumns(10);
 		}
@@ -168,21 +176,22 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return lblTipo;
 	}
-	public JFormattedTextField getTxtCpfCnpj(){
-		if (txtCpfCnpj == null) {
-			txtCpfCnpj = new JFormattedTextField(fm.getCPF());
-			txtCpfCnpj.setColumns(10);
-			txtCpfCnpj.setBounds(336, 89, 163, 20);
+	public JFormattedTextField getTxtCpf(){
+		if (txtCpf == null) {
+			txtCpf = new JFormattedTextField(fm.getCPF());
+			txtCpf.setColumns(10);
+			txtCpf.setBounds(336, 89, 163, 20);
 		}
-		return txtCpfCnpj;
+		return txtCpf;
 	}
 	
-	public JLabel getLblCpfcnpj() {
-		if (lblCpfcnpj == null) {
-			lblCpfcnpj = new JLabel("CPF/CNPJ");
-			lblCpfcnpj.setBounds(336, 72, 95, 14);
+	public JLabel getLblCpf() {
+		if (lblCpf == null) {
+			lblCpf = new JLabel("CPF");
+			lblCpf.setBounds(336, 72, 95, 14);
+			lblCpf.setVisible(false);
 		}
-		return lblCpfcnpj;
+		return lblCpf;
 	}
 	public JFormattedTextField getTxtNome(){
 		if (txtNome == null) {
@@ -348,7 +357,7 @@ public class painelCadastroForncedor extends JFrame {
 		if (lblTelefone == null) {
 			lblTelefone = new JLabel("Telefone");
 			
-			lblTelefone.setBounds(10, 341, 46, 14);
+			lblTelefone.setBounds(10, 341, 94, 14);
 		}
 		return lblTelefone;
 	}
@@ -468,5 +477,22 @@ public class painelCadastroForncedor extends JFrame {
 			lblComplemento.setBounds(10, 268, 142, 14);
 		}
 		return lblComplemento;
+	}
+	public JFormattedTextField getTxtCnpj() {
+		if (txtCnpj == null) {
+			txtCnpj = new JFormattedTextField(fm.getCnpj());
+			txtCnpj.setColumns(10);
+			txtCnpj.setBounds(336, 89, 163, 20);
+			txtCnpj.setVisible(false);
+		}
+		return txtCnpj;
+	}
+	public JLabel getLblCnpj() {
+		if (lblCnpj == null) {
+			lblCnpj = new JLabel("CNPJ");
+			lblCnpj.setBounds(336, 72, 95, 14);
+			lblCnpj.setVisible(false);
+		}
+		return lblCnpj;
 	}
 }
