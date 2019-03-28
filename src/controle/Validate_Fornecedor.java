@@ -2,11 +2,11 @@ package controle;
 
 import java.text.ParseException;
 
-import visão.painelCadastroFornecedor;
+import visão.painelCadastroForncedor;
 
 public class Validate_Fornecedor {
 
-	painelCadastroFornecedor painel_Cadastro_Fornecedor;
+	painelCadastroForncedor painel_Cadastro_Fornecedor;
 	String tipo = new String();
 	String cpfcnpj = new String();
 	String nome = new String();
@@ -21,11 +21,13 @@ public class Validate_Fornecedor {
 	String email = new String();
 	String complemento = new String();
 
-	public Validate_Fornecedor(painelCadastroFornecedor painel_Cadastro_Fornecedor)
-			 {
+	public Validate_Fornecedor(painelCadastroForncedor painel_Cadastro_Fornecedor) throws ParseException {
 
 		tipo = (String) painel_Cadastro_Fornecedor.getCbxTipo().getSelectedItem();
-		cpfcnpj = painel_Cadastro_Fornecedor.getTxtCpfCnpj().getText();
+		if (tipo == "CPF")
+			cpfcnpj = painel_Cadastro_Fornecedor.getTxtCpf().getText();
+		else if (tipo == "CNPJ")
+			cpfcnpj = painel_Cadastro_Fornecedor.getTxtCnpj().getText();
 		nome = painel_Cadastro_Fornecedor.getTxtNome().getText();
 		cep = painel_Cadastro_Fornecedor.getTxtCep().getText();
 		rua = painel_Cadastro_Fornecedor.getTxtRua().getText();
@@ -40,24 +42,30 @@ public class Validate_Fornecedor {
 
 	}
 
-	boolean validacao_Fornecedor(painelCadastroFornecedor painel_Cadastro_Fornecedor) {
+	boolean validacao_Fornecedor(painelCadastroForncedor painel_Cadastro_Fornecedor) throws ParseException {
 
-		if ("".equals(painel_Cadastro_Fornecedor.getTxtCpfCnpj().getText())
+		if ("".equals(painel_Cadastro_Fornecedor.getTxtCpf().getText())
 				|| "".equals(painel_Cadastro_Fornecedor.getTxtNome().getText())
-				|| "".equals(painel_Cadastro_Fornecedor.getTxtCep().getText())
+				|| "     -   ".equals(painel_Cadastro_Fornecedor.getTxtCep().getText())
 				|| "".equals(painel_Cadastro_Fornecedor.getTxtRua().getText())
 				|| "".equals(painel_Cadastro_Fornecedor.getTxtNumero().getText())
 				|| "".equals(painel_Cadastro_Fornecedor.getTxtBairro().getText())
 				|| "".equals(painel_Cadastro_Fornecedor.getTxtCidade().getText())
-				|| "".equals(painel_Cadastro_Fornecedor.getTxtTelefone().getText())
+				|| "(  )     -    ".equals(painel_Cadastro_Fornecedor.getTxtTelefone().getText())
 				|| "".equals(painel_Cadastro_Fornecedor.getTxtCelular().getText())
 				|| "".equals(painel_Cadastro_Fornecedor.getTxtEmail().getText())
 				|| "".equals(painel_Cadastro_Fornecedor.getTxtComplemento().getText())
 				|| "-Selecione-".equals(painel_Cadastro_Fornecedor.getCbxTipo().getSelectedItem())
 				|| "-Selecione-".equals(painel_Cadastro_Fornecedor.getCbxUf().getSelectedItem()))
-
 			return false;
-
+		if ("   .   .   -  ".equals(painel_Cadastro_Fornecedor.getTxtCpf().getText())
+				&& "CPF".equals(painel_Cadastro_Fornecedor.getCbxTipo().getSelectedItem())) {
+			return false;
+		}
+		if ("  .   .   /    -   ".equals(painel_Cadastro_Fornecedor.getTxtCnpj().getText())
+				&& "CNPJ".equals(painel_Cadastro_Fornecedor.getCbxTipo().getSelectedItem())) {
+			return false;
+		}
 		return true;
 
 	}
@@ -134,7 +142,6 @@ public class Validate_Fornecedor {
 		this.uf = uf;
 	}
 
-	
 	public String getTelefone() {
 		return telefone;
 	}
@@ -143,7 +150,6 @@ public class Validate_Fornecedor {
 		this.telefone = telefone;
 	}
 
-	
 	public String getCelular() {
 		return celular;
 	}

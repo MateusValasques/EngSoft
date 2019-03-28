@@ -1,37 +1,37 @@
 package visão;
 
-import java.awt.Button;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.List;
-import java.text.ParseException;
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
 
-import javax.swing.ButtonGroup;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.JFormattedTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
 
 import controle.FormataMascaras;
 
-import javax.swing.JRadioButton;
+import javax.swing.JLabel;
+import java.awt.Color;
+import java.awt.Font;
+import javax.swing.JFormattedTextField;
+import javax.swing.JComboBox;
+import javax.swing.JSeparator;
+import javax.swing.DefaultComboBoxModel;
+import java.awt.List;
+import java.text.ParseException;
+import java.awt.Button;
 
-public class PainelCadastroCliente extends JFrame {
+public class painelCadastroForncedor extends JFrame {
+
 	private JPanel contentPane;
-	private JLabel lblCadastroCliente;
+	private JLabel lblCadastroForncedor;
 	private JFormattedTextField txtCodigo;
 	private JLabel lblCodigo;
 	private JComboBox cbxTipo;
 	private JLabel lblTipo;
-	private JFormattedTextField txtCpfCnpj;
-	private JLabel lblCpfcnpj;
+	private JFormattedTextField txtCpf;
+	private JLabel lblCpf;
 	private JFormattedTextField txtNome;
 	private JLabel lblNome;
 	private JSeparator separator;
@@ -70,12 +70,11 @@ public class PainelCadastroCliente extends JFrame {
 	private Button btnCancelar;
 	private JFormattedTextField txtComplemento;
 	private JLabel lblComplemento;
-	private JLabel lblCredito;
-	private JFormattedTextField txtLimiteCredito;
-	private JRadioButton rbtnAtivo;
-	private JRadioButton rbtnNaoAtivo;
 	FormataMascaras fm = new FormataMascaras();
-	public PainelCadastroCliente(){
+	private JFormattedTextField txtCnpj;
+	private JLabel lblCnpj;
+
+	public painelCadastroForncedor(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 575, 703);
 		contentPane = new JPanel();
@@ -85,13 +84,14 @@ public class PainelCadastroCliente extends JFrame {
 		contentPane.setLayout(null);
 		
 		
-		contentPane.add(getLblCadastroCliente());
+		
+		contentPane.add(getLblCadastroForncedor());
 		contentPane.add(getTxtCodigo());
 		contentPane.add(getLblCodigo());
 		contentPane.add(getCbxTipo());
 		contentPane.add(getLblTipo());
-		contentPane.add(getTxtCpfCnpj());
-		contentPane.add(getLblCpfcnpj());
+		contentPane.add(getTxtCpf());
+		contentPane.add(getLblCpf());
 		contentPane.add(getTxtNome());
 		contentPane.add(getLblNome());
 		contentPane.add(getSeparator());
@@ -130,28 +130,23 @@ public class PainelCadastroCliente extends JFrame {
 		contentPane.add(getBtnCancelar());
 		contentPane.add(getTxtComplemento());
 		contentPane.add(getLblComplemento());
-		contentPane.add(getLblCredito());
-		contentPane.add(getTxtLimiteCredito());
-		contentPane.add(getRbtnAtivo());
-		contentPane.add(getRbtnNaoAtivo());
-		
-		
-		ButtonGroup bg = new ButtonGroup();
-		bg.add(getRbtnAtivo());
-		bg.add(getRbtnNaoAtivo());
-		
+		contentPane.add(getTxtCnpj());
+		contentPane.add(getLblCnpj());
+		getTxtCpf().setVisible(false);
+		getTxtCnpj().setVisible(false);
 	}
-	public JLabel getLblCadastroCliente() {
-		if (lblCadastroCliente == null) {
-			lblCadastroCliente = new JLabel("Cadastro Cliente");
-			lblCadastroCliente.setFont(new Font("Tahoma", Font.ITALIC, 24));
-			lblCadastroCliente.setBounds(0, 0, 295, 40);
+	public JLabel getLblCadastroForncedor() {
+		if (lblCadastroForncedor == null) {
+			lblCadastroForncedor = new JLabel("Cadastro Fornecedor");
+			lblCadastroForncedor.setFont(new Font("Tahoma", Font.ITALIC, 24));
+			lblCadastroForncedor.setBounds(0, 0, 237, 40);
 		}
-		return lblCadastroCliente;
+		return lblCadastroForncedor;
 	}
 	public JFormattedTextField getTxtCodigo() {
 		if (txtCodigo == null) {
 			txtCodigo = new JFormattedTextField();
+			txtCodigo.setEditable(false);
 			txtCodigo.setBounds(10, 89, 163, 20);
 			txtCodigo.setColumns(10);
 		}
@@ -181,63 +176,66 @@ public class PainelCadastroCliente extends JFrame {
 		}
 		return lblTipo;
 	}
-	public JFormattedTextField getTxtCpfCnpj(){
-		
-		if (txtCpfCnpj == null) {
-			txtCpfCnpj = new JFormattedTextField(fm.getCPF());
-			txtCpfCnpj.setColumns(10);
-			txtCpfCnpj.setBounds(336, 89, 163, 20);
+	public JFormattedTextField getTxtCpf(){
+		if (txtCpf == null) {
+			txtCpf = new JFormattedTextField(fm.getCPF());
+			txtCpf.setColumns(10);
+			txtCpf.setBounds(336, 89, 163, 20);
 		}
-		return txtCpfCnpj;
+		return txtCpf;
 	}
-	public JLabel getLblCpfcnpj() {
-		if (lblCpfcnpj == null) {
-			lblCpfcnpj = new JLabel("CPF/CNPJ");
-			lblCpfcnpj.setBounds(336, 72, 95, 14);
+	
+	public JLabel getLblCpf() {
+		if (lblCpf == null) {
+			lblCpf = new JLabel("CPF");
+			lblCpf.setBounds(336, 72, 95, 14);
+			lblCpf.setVisible(false);
 		}
-		return lblCpfcnpj;
+		return lblCpf;
 	}
-	public JFormattedTextField getTxtNome() {
+	public JFormattedTextField getTxtNome(){
 		if (txtNome == null) {
+			
 			txtNome = new JFormattedTextField(fm.getNome());
-			txtNome.setColumns(10);
-			txtNome.setBounds(10, 128, 335, 20);
+			txtNome.setColumns(10);			
+			txtNome.setBounds(10, 134, 335, 20);
 		}
 		return txtNome;
 	}
 	public JLabel getLblNome() {
 		if (lblNome == null) {
 			lblNome = new JLabel("Nome");
-			lblNome.setBounds(10, 111, 46, 14);
+			lblNome.setBounds(10, 117, 46, 14);
 		}
 		return lblNome;
 	}
 	public JSeparator getSeparator() {
 		if (separator == null) {
 			separator = new JSeparator();
-			separator.setBounds(2, 206, 559, 2);
+			separator.setBounds(2, 164, 559, 2);
 		}
 		return separator;
 	}
-	public JFormattedTextField getTxtCep() {
+	public JFormattedTextField getTxtCep(){
 		if (txtCep == null) {
 			txtCep = new JFormattedTextField(fm.getCep());
 			txtCep.setColumns(10);
-			txtCep.setBounds(12, 248, 163, 20);
+			
+			txtCep.setBounds(12, 207, 163, 20);
 		}
 		return txtCep;
 	}
 	public JLabel getLblCep() {
 		if (lblCep == null) {
 			lblCep = new JLabel("CEP");
-			lblCep.setBounds(12, 231, 46, 14);
+			lblCep.setBounds(12, 190, 46, 14);
 		}
 		return lblCep;
 	}
 	public JLabel getLblEndereo() {
 		if (lblEndereo == null) {
 			lblEndereo = new JLabel("Endere\u00E7o");
-			lblEndereo.setBounds(10, 211, 145, 14);
+			lblEndereo.setBounds(10, 168, 145, 14);
 		}
 		return lblEndereo;
 	}
@@ -251,74 +249,74 @@ public class PainelCadastroCliente extends JFrame {
 	public JSeparator getSeparator_1() {
 		if (separator_1 == null) {
 			separator_1 = new JSeparator();
-			separator_1.setBounds(0, 38, 173, 2);
+			separator_1.setBounds(0, 38, 225, 2);
 		}
 		return separator_1;
 	}
 	public JFormattedTextField getTxtRua() {
 		if (txtRua == null) {
-			txtRua = new JFormattedTextField(fm.getEndereco());
+			txtRua = new JFormattedTextField();
 			txtRua.setColumns(10);
-			txtRua.setBounds(212, 248, 163, 20);
+			txtRua.setBounds(212, 207, 163, 20);
 		}
 		return txtRua;
 	}
 	public JLabel getLabel_1() {
 		if (lblRua == null) {
 			lblRua = new JLabel("Rua");
-			lblRua.setBounds(212, 231, 46, 14);
+			lblRua.setBounds(212, 190, 46, 14);
 		}
 		return lblRua;
 	}
 	public JFormattedTextField getTxtBairro() {
 		if (txtBairro == null) {
-			txtBairro = new JFormattedTextField();
+			txtBairro = new JFormattedTextField(fm.getEndereco());
 			txtBairro.setColumns(10);
-			txtBairro.setBounds(10, 287, 163, 20);
+			txtBairro.setBounds(12, 246, 163, 20);
 		}
 		return txtBairro;
 	}
 	public JLabel getLabel_1_1() {
 		if (lblBairro == null) {
 			lblBairro = new JLabel("Bairro");
-			lblBairro.setBounds(12, 270, 46, 14);
+			lblBairro.setBounds(12, 229, 46, 14);
 		}
 		return lblBairro;
 	}
 	public JFormattedTextField getTxtCidade() {
 		if (txtCidade == null) {
-			txtCidade = new JFormattedTextField();
+			txtCidade = new JFormattedTextField(fm.getEndereco());
 			txtCidade.setColumns(10);
-			txtCidade.setBounds(212, 287, 163, 20);
+			txtCidade.setBounds(212, 246, 163, 20);
 		}
 		return txtCidade;
 	}
 	public JLabel getLblCidade() {
 		if (lblCidade == null) {
 			lblCidade = new JLabel("Cidade");
-			lblCidade.setBounds(212, 270, 46, 14);
+			lblCidade.setBounds(212, 229, 46, 14);
 		}
 		return lblCidade;
 	}
 	public JLabel getLblUf() {
 		if (lblUf == null) {
 			lblUf = new JLabel("UF:");
-			lblUf.setBounds(420, 270, 46, 14);
+			lblUf.setBounds(420, 229, 46, 14);
 		}
 		return lblUf;
 	}
-	public JFormattedTextField getTxtNumero() {
+	public JFormattedTextField getTxtNumero(){
 		if (txtNumero == null) {
-			txtNumero = new JFormattedTextField();
+			txtNumero = new JFormattedTextField(fm.getNumero());
 			txtNumero.setColumns(10);
-			txtNumero.setBounds(420, 248, 71, 20);
+			txtNumero.setBounds(420, 207, 71, 20);
 		}
 		return txtNumero;
 	}
 	public JLabel getNúmero() {
 		if (Número == null) {
 			Número = new JLabel("N\u00FAmero");
-			Número.setBounds(420, 231, 71, 14);
+			Número.setBounds(420, 190, 71, 14);
 		}
 		return Número;
 	}
@@ -328,52 +326,53 @@ public class PainelCadastroCliente extends JFrame {
 			
 			cbxUf.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-Selecione-", "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RS", "SC", "SE", "SP", "TO" }));
 			
-			cbxUf.setBounds(420, 286, 85, 22);
+			cbxUf.setBounds(420, 245, 85, 22);
 		}
 		return cbxUf;
 	}
 	public JSeparator getSeparator_2() {
 		if (separator_2 == null) {
 			separator_2 = new JSeparator();
-			separator_2.setBounds(-5, 349, 559, 2);
+			separator_2.setBounds(2, 315, 559, 2);
 		}
 		return separator_2;
 	}
 	public JLabel getC() {
 		if (C == null) {
 			C = new JLabel("Contato");
-			C.setBounds(10, 360, 145, 14);
+			C.setBounds(10, 321, 145, 14);
 		}
 		return C;
 	}
-	
-	public JFormattedTextField getTxtTelefone() {
+	public JFormattedTextField getTxtTelefone(){
 		if (txtTelefone == null) {
-			txtTelefone = new JFormattedTextField();
+			txtTelefone = new JFormattedTextField(fm.gettelefone());
 			txtTelefone.setColumns(10);
-			txtTelefone.setBounds(10, 395, 127, 20);
+			
+			txtTelefone.setBounds(10, 358, 127, 20);
 		}
 		return txtTelefone;
 	}
-	public JLabel getLblTelefone() {
+	public JLabel getLblTelefone(){
 		if (lblTelefone == null) {
 			lblTelefone = new JLabel("Telefone");
-			lblTelefone.setBounds(10, 378, 46, 14);
+			
+			lblTelefone.setBounds(10, 341, 94, 14);
 		}
 		return lblTelefone;
 	}
-	public JFormattedTextField getTxtCelular() {
+	public JFormattedTextField getTxtCelular(){
 		if (txtCelular == null) {
-			txtCelular = new JFormattedTextField();
+			txtCelular = new JFormattedTextField(fm.getCelular());
 			txtCelular.setColumns(10);
-			txtCelular.setBounds(168, 395, 127, 20);
+			txtCelular.setBounds(218, 358, 127, 20);
 		}
 		return txtCelular;
 	}
 	public JLabel getLabel_1_2() {
 		if (lblCelular == null) {
 			lblCelular = new JLabel("Celular");
-			lblCelular.setBounds(168, 378, 46, 14);
+			lblCelular.setBounds(218, 341, 46, 14);
 		}
 		return lblCelular;
 	}
@@ -381,21 +380,21 @@ public class PainelCadastroCliente extends JFrame {
 		if (txtEmail == null) {
 			txtEmail = new JFormattedTextField();
 			txtEmail.setColumns(10);
-			txtEmail.setBounds(315, 395, 204, 20);
+			txtEmail.setBounds(11, 398, 247, 20);
 		}
 		return txtEmail;
 	}
 	public JLabel getLblEmail() {
 		if (lblEmail == null) {
 			lblEmail = new JLabel("E-mail");
-			lblEmail.setBounds(315, 382, 46, 14);
+			lblEmail.setBounds(11, 385, 46, 14);
 		}
 		return lblEmail;
 	}
 	public JSeparator getSeparator_3() {
 		if (separator_3 == null) {
 			separator_3 = new JSeparator();
-			separator_3.setBounds(0, 426, 559, 2);
+			separator_3.setBounds(-4, 431, 559, 2);
 		}
 		return separator_3;
 	}
@@ -403,14 +402,14 @@ public class PainelCadastroCliente extends JFrame {
 		if (txtPesquisa == null) {
 			txtPesquisa = new JFormattedTextField();
 			txtPesquisa.setColumns(10);
-			txtPesquisa.setBounds(115, 453, 432, 20);
+			txtPesquisa.setBounds(111, 457, 432, 20);
 		}
 		return txtPesquisa;
 	}
 	public JLabel getPesquisar() {
 		if (Pesquisar == null) {
 			Pesquisar = new JLabel("Pesquisar");
-			Pesquisar.setBounds(10, 435, 98, 14);
+			Pesquisar.setBounds(6, 439, 98, 14);
 		}
 		return Pesquisar;
 	}
@@ -418,49 +417,49 @@ public class PainelCadastroCliente extends JFrame {
 		if (cbxTipoPesquisa == null) {
 			cbxTipoPesquisa = new JComboBox();
 			cbxTipoPesquisa.setModel(new DefaultComboBoxModel(new String[] {"-Tipo-", "CPF", "CNPJ", "Nome", "C\u00F3digo"}));
-			cbxTipoPesquisa.setBounds(10, 452, 98, 22);
+			cbxTipoPesquisa.setBounds(6, 456, 98, 22);
 		}
 		return cbxTipoPesquisa;
 	}
 	public List getList() {
 		if (list == null) {
 			list = new List();
-			list.setBounds(10, 483, 537, 134);
+			list.setBounds(6, 487, 537, 134);
 		}
 		return list;
 	}
 	public Button getBtnInserir() {
 		if (btnInserir == null) {
 			btnInserir = new Button("Inserir");
-			btnInserir.setBounds(14, 635, 70, 22);
+			btnInserir.setBounds(10, 639, 70, 22);
 		}
 		return btnInserir;
 	}
 	public Button getBtnAlterar() {
 		if (btnAlterar == null) {
 			btnAlterar = new Button("Alterar");
-			btnAlterar.setBounds(119, 635, 70, 22);
+			btnAlterar.setBounds(115, 639, 70, 22);
 		}
 		return btnAlterar;
 	}
 	public Button getBtnExcluir() {
 		if (btnExcluir == null) {
 			btnExcluir = new Button("Excluir");
-			btnExcluir.setBounds(230, 635, 70, 22);
+			btnExcluir.setBounds(226, 639, 70, 22);
 		}
 		return btnExcluir;
 	}
 	public Button getBtnConfirmar() {
 		if (btnConfirmar == null) {
 			btnConfirmar = new Button("Confirmar");
-			btnConfirmar.setBounds(340, 635, 70, 22);
+			btnConfirmar.setBounds(336, 639, 70, 22);
 		}
 		return btnConfirmar;
 	}
 	public Button getBtnCancelar() {
 		if (btnCancelar == null) {
 			btnCancelar = new Button("Cancelar");
-			btnCancelar.setBounds(449, 635, 70, 22);
+			btnCancelar.setBounds(445, 639, 70, 22);
 		}
 		return btnCancelar;
 	}
@@ -468,46 +467,32 @@ public class PainelCadastroCliente extends JFrame {
 		if (txtComplemento == null) {
 			txtComplemento = new JFormattedTextField();
 			txtComplemento.setColumns(10);
-			txtComplemento.setBounds(10, 325, 365, 20);
+			txtComplemento.setBounds(10, 284, 365, 20);
 		}
 		return txtComplemento;
 	}
 	public JLabel getLblComplemento() {
 		if (lblComplemento == null) {
 			lblComplemento = new JLabel("Complemento");
-			lblComplemento.setBounds(10, 309, 142, 14);
+			lblComplemento.setBounds(10, 268, 142, 14);
 		}
 		return lblComplemento;
 	}
-	public JLabel getLblCredito() {
-		if (lblCredito == null) {
-			lblCredito = new JLabel("Limite de cr\u00E9dito");
-			lblCredito.setBounds(10, 159, 89, 14);
+	public JFormattedTextField getTxtCnpj() {
+		if (txtCnpj == null) {
+			txtCnpj = new JFormattedTextField(fm.getCnpj());
+			txtCnpj.setColumns(10);
+			txtCnpj.setBounds(336, 89, 163, 20);
+			txtCnpj.setVisible(false);
 		}
-		return lblCredito;
+		return txtCnpj;
 	}
-	public JFormattedTextField getTxtLimiteCredito() {
-		if (txtLimiteCredito == null) {
-			txtLimiteCredito = new JFormattedTextField();
-			txtLimiteCredito.setColumns(10);
-			txtLimiteCredito.setBounds(10, 175, 163, 20);
+	public JLabel getLblCnpj() {
+		if (lblCnpj == null) {
+			lblCnpj = new JLabel("CNPJ");
+			lblCnpj.setBounds(336, 72, 95, 14);
+			lblCnpj.setVisible(false);
 		}
-		return txtLimiteCredito;
-	}
-	public JRadioButton getRbtnAtivo() {
-		if (rbtnAtivo == null) {
-			rbtnAtivo = new JRadioButton("Ativo");
-			rbtnAtivo.setBackground(new Color(153, 255, 204));
-			rbtnAtivo.setBounds(356, 157, 109, 23);
-		}
-		return rbtnAtivo;
-	}
-	public JRadioButton getRbtnNaoAtivo() {
-		if (rbtnNaoAtivo == null) {
-			rbtnNaoAtivo = new JRadioButton("N\u00E3o Ativo");
-			rbtnNaoAtivo.setBackground(new Color(153, 255, 204));
-			rbtnNaoAtivo.setBounds(356, 178, 109, 23);
-		}
-		return rbtnNaoAtivo;
+		return lblCnpj;
 	}
 }

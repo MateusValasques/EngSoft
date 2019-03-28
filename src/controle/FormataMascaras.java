@@ -45,7 +45,7 @@ public class FormataMascaras {
 			
 		}else if(opcao == 3){
 			try{
-				mascara = new MaskFormatter("****");
+				mascara = new MaskFormatter("*****");
 				mascara.setValidCharacters("0123456789");
 			}catch(ParseException exc){
 				System.out.println(exc.getMessage());
@@ -94,7 +94,14 @@ public class FormataMascaras {
 		return new DefaultFormatterFactory(mascara);
 		
 		
-	}public DefaultFormatterFactory gettelefone() {
+	}
+	public DefaultFormatterFactory getCnpj() {
+		Formata("##.###.###/####-## ", 1);
+		return new DefaultFormatterFactory(mascara);
+		
+		
+	}
+	public DefaultFormatterFactory gettelefone() {
 		Formata("(##) ####-####", 1);
 		return new DefaultFormatterFactory(mascara);
 	}

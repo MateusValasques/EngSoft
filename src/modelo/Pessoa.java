@@ -54,7 +54,7 @@ public class Pessoa {
 		
 		this.celular = celular;
 		this.email = email;
-		this.complemento = complemento;
+		this.setComplemento(complemento);
 	}
 
 	public int getCodigo() {
@@ -161,6 +161,14 @@ public class Pessoa {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
 	}
 }
 
