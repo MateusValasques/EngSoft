@@ -18,6 +18,10 @@ public class Fornecedor {
 	private String celular;
 	private String email;
 	private String complemento;
+	
+	public Fornecedor() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public Fornecedor(int codigo, String tipo, String cpfcnpj, String nome, String cep, String rua, String numero,
 			String bairro, String cidade, String uf,String telefone, String celular, String email, String complemento) {

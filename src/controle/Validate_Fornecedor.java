@@ -7,6 +7,7 @@ import visão.painelCadastroForncedor;
 public class Validate_Fornecedor {
 
 	painelCadastroForncedor painel_Cadastro_Fornecedor;
+	private int codigo;
 	String tipo = new String();
 	String cpfcnpj = new String();
 	String nome = new String();
@@ -23,6 +24,7 @@ public class Validate_Fornecedor {
 
 	public Validate_Fornecedor(painelCadastroForncedor painel_Cadastro_Fornecedor) throws ParseException {
 
+		
 		tipo = (String) painel_Cadastro_Fornecedor.getCbxTipo().getSelectedItem();
 		if (tipo == "CPF")
 			cpfcnpj = painel_Cadastro_Fornecedor.getTxtCpf().getText();
@@ -172,6 +174,14 @@ public class Validate_Fornecedor {
 
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
+	}
+
+	public int getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
 	}
 
 }

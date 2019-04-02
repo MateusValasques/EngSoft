@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
 
@@ -21,6 +22,9 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.List;
 import java.text.ParseException;
 import java.awt.Button;
+import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
 
 public class painelCadastroForncedor extends JFrame {
 
@@ -62,7 +66,6 @@ public class painelCadastroForncedor extends JFrame {
 	private JFormattedTextField txtPesquisa;
 	private JLabel Pesquisar;
 	private JComboBox cbxTipoPesquisa;
-	private List list;
 	private Button btnInserir;
 	private Button btnAlterar;
 	private Button btnExcluir;
@@ -73,8 +76,13 @@ public class painelCadastroForncedor extends JFrame {
 	FormataMascaras fm = new FormataMascaras();
 	private JFormattedTextField txtCnpj;
 	private JLabel lblCnpj;
+	private JButton btnPesquisar;
+	private Button btnConfirmar_Alteracao;
+	private Button btnConfirmar_Exclusao;
+	private JTable tabela;
+	private JScrollPane scrollPane;
 
-	public painelCadastroForncedor(){
+	public painelCadastroForncedor() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 575, 703);
 		contentPane = new JPanel();
@@ -82,9 +90,7 @@ public class painelCadastroForncedor extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		
-		
+
 		contentPane.add(getLblCadastroForncedor());
 		contentPane.add(getTxtCodigo());
 		contentPane.add(getLblCodigo());
@@ -122,7 +128,6 @@ public class painelCadastroForncedor extends JFrame {
 		contentPane.add(getTxtPesquisa());
 		contentPane.add(getPesquisar());
 		contentPane.add(getCbxTipoPesquisa());
-		contentPane.add(getList());
 		contentPane.add(getBtnInserir());
 		contentPane.add(getBtnAlterar());
 		contentPane.add(getBtnExcluir());
@@ -132,9 +137,14 @@ public class painelCadastroForncedor extends JFrame {
 		contentPane.add(getLblComplemento());
 		contentPane.add(getTxtCnpj());
 		contentPane.add(getLblCnpj());
+		contentPane.add(getBtnPesquisar());
+		contentPane.add(getBtnConfirmar_Alteracao());
+		contentPane.add(getBtnConfirmar_Exclusao());
+		contentPane.add(getScrollPane());
 		getTxtCpf().setVisible(false);
 		getTxtCnpj().setVisible(false);
 	}
+
 	public JLabel getLblCadastroForncedor() {
 		if (lblCadastroForncedor == null) {
 			lblCadastroForncedor = new JLabel("Cadastro Fornecedor");
@@ -143,6 +153,7 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return lblCadastroForncedor;
 	}
+
 	public JFormattedTextField getTxtCodigo() {
 		if (txtCodigo == null) {
 			txtCodigo = new JFormattedTextField();
@@ -152,6 +163,7 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return txtCodigo;
 	}
+
 	public JLabel getLblCodigo() {
 		if (lblCodigo == null) {
 			lblCodigo = new JLabel("C\u00F3digo");
@@ -159,9 +171,11 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return lblCodigo;
 	}
+
 	public JComboBox getCbxTipo() {
 		if (cbxTipo == null) {
 			cbxTipo = new JComboBox();
+			cbxTipo.setEnabled(false);
 			cbxTipo.addItem("-Selecione-");
 			cbxTipo.addItem("CPF");
 			cbxTipo.addItem("CNPJ");
@@ -169,6 +183,7 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return cbxTipo;
 	}
+
 	public JLabel getLblTipo() {
 		if (lblTipo == null) {
 			lblTipo = new JLabel("Tipo");
@@ -176,15 +191,17 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return lblTipo;
 	}
-	public JFormattedTextField getTxtCpf(){
+
+	public JFormattedTextField getTxtCpf() {
 		if (txtCpf == null) {
 			txtCpf = new JFormattedTextField(fm.getCPF());
+			txtCpf.setEditable(false);
 			txtCpf.setColumns(10);
 			txtCpf.setBounds(336, 89, 163, 20);
 		}
 		return txtCpf;
 	}
-	
+
 	public JLabel getLblCpf() {
 		if (lblCpf == null) {
 			lblCpf = new JLabel("CPF");
@@ -193,15 +210,18 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return lblCpf;
 	}
-	public JFormattedTextField getTxtNome(){
+
+	public JFormattedTextField getTxtNome() {
 		if (txtNome == null) {
-			
+
 			txtNome = new JFormattedTextField(fm.getNome());
-			txtNome.setColumns(10);			
+			txtNome.setEditable(false);
+			txtNome.setColumns(10);
 			txtNome.setBounds(10, 134, 335, 20);
 		}
 		return txtNome;
 	}
+
 	public JLabel getLblNome() {
 		if (lblNome == null) {
 			lblNome = new JLabel("Nome");
@@ -209,6 +229,7 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return lblNome;
 	}
+
 	public JSeparator getSeparator() {
 		if (separator == null) {
 			separator = new JSeparator();
@@ -216,15 +237,18 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return separator;
 	}
-	public JFormattedTextField getTxtCep(){
+
+	public JFormattedTextField getTxtCep() {
 		if (txtCep == null) {
 			txtCep = new JFormattedTextField(fm.getCep());
+			txtCep.setEditable(false);
 			txtCep.setColumns(10);
-			
+
 			txtCep.setBounds(12, 207, 163, 20);
 		}
 		return txtCep;
 	}
+
 	public JLabel getLblCep() {
 		if (lblCep == null) {
 			lblCep = new JLabel("CEP");
@@ -232,6 +256,7 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return lblCep;
 	}
+
 	public JLabel getLblEndereo() {
 		if (lblEndereo == null) {
 			lblEndereo = new JLabel("Endere\u00E7o");
@@ -239,6 +264,7 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return lblEndereo;
 	}
+
 	public JLabel getLblDadosPessoais() {
 		if (lblDadosPessoais == null) {
 			lblDadosPessoais = new JLabel("Dados Pessoais");
@@ -246,6 +272,7 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return lblDadosPessoais;
 	}
+
 	public JSeparator getSeparator_1() {
 		if (separator_1 == null) {
 			separator_1 = new JSeparator();
@@ -253,14 +280,17 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return separator_1;
 	}
+
 	public JFormattedTextField getTxtRua() {
 		if (txtRua == null) {
 			txtRua = new JFormattedTextField();
+			txtRua.setEditable(false);
 			txtRua.setColumns(10);
 			txtRua.setBounds(212, 207, 163, 20);
 		}
 		return txtRua;
 	}
+
 	public JLabel getLabel_1() {
 		if (lblRua == null) {
 			lblRua = new JLabel("Rua");
@@ -268,14 +298,17 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return lblRua;
 	}
+
 	public JFormattedTextField getTxtBairro() {
 		if (txtBairro == null) {
 			txtBairro = new JFormattedTextField(fm.getEndereco());
+			txtBairro.setEditable(false);
 			txtBairro.setColumns(10);
 			txtBairro.setBounds(12, 246, 163, 20);
 		}
 		return txtBairro;
 	}
+
 	public JLabel getLabel_1_1() {
 		if (lblBairro == null) {
 			lblBairro = new JLabel("Bairro");
@@ -283,14 +316,17 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return lblBairro;
 	}
+
 	public JFormattedTextField getTxtCidade() {
 		if (txtCidade == null) {
 			txtCidade = new JFormattedTextField(fm.getEndereco());
+			txtCidade.setEditable(false);
 			txtCidade.setColumns(10);
 			txtCidade.setBounds(212, 246, 163, 20);
 		}
 		return txtCidade;
 	}
+
 	public JLabel getLblCidade() {
 		if (lblCidade == null) {
 			lblCidade = new JLabel("Cidade");
@@ -298,6 +334,7 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return lblCidade;
 	}
+
 	public JLabel getLblUf() {
 		if (lblUf == null) {
 			lblUf = new JLabel("UF:");
@@ -305,14 +342,17 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return lblUf;
 	}
-	public JFormattedTextField getTxtNumero(){
+
+	public JFormattedTextField getTxtNumero() {
 		if (txtNumero == null) {
 			txtNumero = new JFormattedTextField(fm.getNumero());
+			txtNumero.setEditable(false);
 			txtNumero.setColumns(10);
 			txtNumero.setBounds(420, 207, 71, 20);
 		}
 		return txtNumero;
 	}
+
 	public JLabel getNúmero() {
 		if (Número == null) {
 			Número = new JLabel("N\u00FAmero");
@@ -320,16 +360,21 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return Número;
 	}
+
 	public JComboBox getCbxUf() {
 		if (cbxUf == null) {
 			cbxUf = new JComboBox();
-			
-			cbxUf.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-Selecione-", "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RS", "SC", "SE", "SP", "TO" }));
-			
+			cbxUf.setEnabled(false);
+
+			cbxUf.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-Selecione-", "AC", "AL", "AM", "AP",
+					"BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN",
+					"RO", "RS", "SC", "SE", "SP", "TO" }));
+
 			cbxUf.setBounds(420, 245, 85, 22);
 		}
 		return cbxUf;
 	}
+
 	public JSeparator getSeparator_2() {
 		if (separator_2 == null) {
 			separator_2 = new JSeparator();
@@ -337,6 +382,7 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return separator_2;
 	}
+
 	public JLabel getC() {
 		if (C == null) {
 			C = new JLabel("Contato");
@@ -344,31 +390,37 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return C;
 	}
-	public JFormattedTextField getTxtTelefone(){
+
+	public JFormattedTextField getTxtTelefone() {
 		if (txtTelefone == null) {
 			txtTelefone = new JFormattedTextField(fm.gettelefone());
+			txtTelefone.setEditable(false);
 			txtTelefone.setColumns(10);
-			
+
 			txtTelefone.setBounds(10, 358, 127, 20);
 		}
 		return txtTelefone;
 	}
-	public JLabel getLblTelefone(){
+
+	public JLabel getLblTelefone() {
 		if (lblTelefone == null) {
 			lblTelefone = new JLabel("Telefone");
-			
+
 			lblTelefone.setBounds(10, 341, 94, 14);
 		}
 		return lblTelefone;
 	}
-	public JFormattedTextField getTxtCelular(){
+
+	public JFormattedTextField getTxtCelular() {
 		if (txtCelular == null) {
 			txtCelular = new JFormattedTextField(fm.getCelular());
+			txtCelular.setEditable(false);
 			txtCelular.setColumns(10);
 			txtCelular.setBounds(218, 358, 127, 20);
 		}
 		return txtCelular;
 	}
+
 	public JLabel getLabel_1_2() {
 		if (lblCelular == null) {
 			lblCelular = new JLabel("Celular");
@@ -376,14 +428,17 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return lblCelular;
 	}
+
 	public JFormattedTextField getTxtEmail() {
 		if (txtEmail == null) {
 			txtEmail = new JFormattedTextField();
+			txtEmail.setEditable(false);
 			txtEmail.setColumns(10);
 			txtEmail.setBounds(11, 398, 247, 20);
 		}
 		return txtEmail;
 	}
+
 	public JLabel getLblEmail() {
 		if (lblEmail == null) {
 			lblEmail = new JLabel("E-mail");
@@ -391,6 +446,7 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return lblEmail;
 	}
+
 	public JSeparator getSeparator_3() {
 		if (separator_3 == null) {
 			separator_3 = new JSeparator();
@@ -398,14 +454,17 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return separator_3;
 	}
+
 	public JFormattedTextField getTxtPesquisa() {
 		if (txtPesquisa == null) {
 			txtPesquisa = new JFormattedTextField();
+			txtPesquisa.setEditable(false);
 			txtPesquisa.setColumns(10);
-			txtPesquisa.setBounds(111, 457, 432, 20);
+			txtPesquisa.setBounds(111, 457, 310, 20);
 		}
 		return txtPesquisa;
 	}
+
 	public JLabel getPesquisar() {
 		if (Pesquisar == null) {
 			Pesquisar = new JLabel("Pesquisar");
@@ -413,21 +472,18 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return Pesquisar;
 	}
+
 	public JComboBox getCbxTipoPesquisa() {
 		if (cbxTipoPesquisa == null) {
 			cbxTipoPesquisa = new JComboBox();
-			cbxTipoPesquisa.setModel(new DefaultComboBoxModel(new String[] {"-Tipo-", "CPF", "CNPJ", "Nome", "C\u00F3digo"}));
+			cbxTipoPesquisa.setEnabled(false);
+			cbxTipoPesquisa.setModel(
+					new DefaultComboBoxModel(new String[] { "-Tipo-", "CPF", "CNPJ", "Nome", "C\u00F3digo" }));
 			cbxTipoPesquisa.setBounds(6, 456, 98, 22);
 		}
 		return cbxTipoPesquisa;
 	}
-	public List getList() {
-		if (list == null) {
-			list = new List();
-			list.setBounds(6, 487, 537, 134);
-		}
-		return list;
-	}
+
 	public Button getBtnInserir() {
 		if (btnInserir == null) {
 			btnInserir = new Button("Inserir");
@@ -435,6 +491,7 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return btnInserir;
 	}
+
 	public Button getBtnAlterar() {
 		if (btnAlterar == null) {
 			btnAlterar = new Button("Alterar");
@@ -442,6 +499,7 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return btnAlterar;
 	}
+
 	public Button getBtnExcluir() {
 		if (btnExcluir == null) {
 			btnExcluir = new Button("Excluir");
@@ -449,6 +507,7 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return btnExcluir;
 	}
+
 	public Button getBtnConfirmar() {
 		if (btnConfirmar == null) {
 			btnConfirmar = new Button("Confirmar");
@@ -456,6 +515,7 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return btnConfirmar;
 	}
+
 	public Button getBtnCancelar() {
 		if (btnCancelar == null) {
 			btnCancelar = new Button("Cancelar");
@@ -463,14 +523,17 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return btnCancelar;
 	}
+
 	public JFormattedTextField getTxtComplemento() {
 		if (txtComplemento == null) {
 			txtComplemento = new JFormattedTextField();
+			txtComplemento.setEditable(false);
 			txtComplemento.setColumns(10);
 			txtComplemento.setBounds(10, 284, 365, 20);
 		}
 		return txtComplemento;
 	}
+
 	public JLabel getLblComplemento() {
 		if (lblComplemento == null) {
 			lblComplemento = new JLabel("Complemento");
@@ -478,6 +541,7 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return lblComplemento;
 	}
+
 	public JFormattedTextField getTxtCnpj() {
 		if (txtCnpj == null) {
 			txtCnpj = new JFormattedTextField(fm.getCnpj());
@@ -487,6 +551,7 @@ public class painelCadastroForncedor extends JFrame {
 		}
 		return txtCnpj;
 	}
+
 	public JLabel getLblCnpj() {
 		if (lblCnpj == null) {
 			lblCnpj = new JLabel("CNPJ");
@@ -494,5 +559,56 @@ public class painelCadastroForncedor extends JFrame {
 			lblCnpj.setVisible(false);
 		}
 		return lblCnpj;
+	}
+
+	public JButton getBtnPesquisar() {
+		if (btnPesquisar == null) {
+			btnPesquisar = new JButton("Pesquisar");
+			btnPesquisar.setEnabled(false);
+			btnPesquisar.setBounds(431, 456, 112, 23);
+		}
+		return btnPesquisar;
+	}
+
+	public Button getBtnConfirmar_Alteracao() {
+		if (btnConfirmar_Alteracao == null) {
+			btnConfirmar_Alteracao = new Button("Confirmar");
+			btnConfirmar_Alteracao.setBounds(336, 639, 70, 22);
+		}
+		return btnConfirmar_Alteracao;
+	}
+
+	public Button getBtnConfirmar_Exclusao() {
+		if (btnConfirmar_Exclusao == null) {
+			btnConfirmar_Exclusao = new Button("Confirmar");
+			btnConfirmar_Exclusao.setBounds(336, 639, 70, 22);
+		}
+		return btnConfirmar_Exclusao;
+	}
+
+	public JTable getTabela() {
+		if (tabela == null) {
+			tabela = new JTable();
+
+			tabela.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+					"ID", "Nome", "CPF/CNPJ"
+				}
+			));
+			tabela.getColumnModel().getColumn(0).setPreferredWidth(110);
+			tabela.getColumnModel().getColumn(1).setPreferredWidth(188);
+			tabela.getColumnModel().getColumn(2).setPreferredWidth(82);
+		}
+		return tabela;
+	}
+	public JScrollPane getScrollPane() {
+		if (scrollPane == null) {
+			scrollPane = new JScrollPane();
+			scrollPane.setBounds(10, 488, 533, 137);
+			scrollPane.setViewportView(getTabela());
+		}
+		return scrollPane;
 	}
 }

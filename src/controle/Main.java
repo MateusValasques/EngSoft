@@ -3,7 +3,9 @@ package controle;
 import java.util.ArrayList;
 
 import dao.Fornecedor_Dao;
+import dao.Produto_Dao;
 import modelo.Fornecedor;
+import visão.Modelo_Tabela;
 import visão.PainelCadastroCliente;
 import visão.PainelCadastroFuncionario;
 import visão.painelCadastroForncedor;
@@ -18,14 +20,19 @@ public class Main {
 	static Controlador_Painel_Cadastro_Fornecedor controladorPainelCadastroFornecedor;
 	static Controlador_Opcoes controladorOpcoes;
 	
-	static ArrayList<Fornecedor> Fornecedores = new ArrayList();
+	
+	
+		
 	
 	public static void main(String[] args) {
 		
 		painel_Cadastro_Forncedor.setVisible(true);
 		painel_Cadastro_Forncedor.setLocation(300,0);
-		Fornecedores = Fornecedor_Dao.read();
-		controladorPainelCadastroFornecedor = new Controlador_Painel_Cadastro_Fornecedor(painel_Cadastro_Forncedor, Fornecedores);
+		Fornecedor_Dao fornecedorDao = new Fornecedor_Dao();
+		fornecedorDao.preencher_Tabela();
+		controladorPainelCadastroFornecedor = new Controlador_Painel_Cadastro_Fornecedor(painel_Cadastro_Forncedor);
+		
+		
 		
 	}
 	
