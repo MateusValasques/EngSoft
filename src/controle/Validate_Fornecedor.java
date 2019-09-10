@@ -1,6 +1,10 @@
 package controle;
 
 import java.text.ParseException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.swing.JOptionPane;
 
 import visão.painelCadastroForncedor;
 
@@ -24,13 +28,13 @@ public class Validate_Fornecedor {
 
 	public Validate_Fornecedor(painelCadastroForncedor painel_Cadastro_Fornecedor) throws ParseException {
 
-		
 		tipo = (String) painel_Cadastro_Fornecedor.getCbxTipo().getSelectedItem();
 		if (tipo == "CPF")
 			cpfcnpj = painel_Cadastro_Fornecedor.getTxtCpf().getText();
 		else if (tipo == "CNPJ")
 			cpfcnpj = painel_Cadastro_Fornecedor.getTxtCnpj().getText();
 		nome = painel_Cadastro_Fornecedor.getTxtNome().getText();
+		nome.replace("  ", "");
 		cep = painel_Cadastro_Fornecedor.getTxtCep().getText();
 		rua = painel_Cadastro_Fornecedor.getTxtRua().getText();
 		numero = painel_Cadastro_Fornecedor.getTxtNumero().getText();
@@ -42,9 +46,16 @@ public class Validate_Fornecedor {
 		email = painel_Cadastro_Fornecedor.getTxtEmail().getText();
 		complemento = painel_Cadastro_Fornecedor.getTxtComplemento().getText();
 
+		cidade.replace("  ", "");
+		numero.replace("  ", "");
+		bairro.replace("  ", "");
+		rua.replace("  ", "");
+
 	}
 
 	boolean validacao_Fornecedor(painelCadastroForncedor painel_Cadastro_Fornecedor) throws ParseException {
+
+		Validacao_Email validacaoEmail = new Validacao_Email();
 
 		if ("".equals(painel_Cadastro_Fornecedor.getTxtCpf().getText())
 				|| "".equals(painel_Cadastro_Fornecedor.getTxtNome().getText())
@@ -58,7 +69,8 @@ public class Validate_Fornecedor {
 				|| "".equals(painel_Cadastro_Fornecedor.getTxtEmail().getText())
 				|| "".equals(painel_Cadastro_Fornecedor.getTxtComplemento().getText())
 				|| "-Selecione-".equals(painel_Cadastro_Fornecedor.getCbxTipo().getSelectedItem())
-				|| "-Selecione-".equals(painel_Cadastro_Fornecedor.getCbxUf().getSelectedItem()))
+				|| "-Selecione-".equals(painel_Cadastro_Fornecedor.getCbxUf().getSelectedItem())
+				|| validacaoEmail.verificacao(painel_Cadastro_Fornecedor.getTxtEmail().getText()) == false)
 			return false;
 		if ("   .   .   -  ".equals(painel_Cadastro_Fornecedor.getTxtCpf().getText())
 				&& "CPF".equals(painel_Cadastro_Fornecedor.getCbxTipo().getSelectedItem())) {
@@ -68,8 +80,127 @@ public class Validate_Fornecedor {
 				&& "CNPJ".equals(painel_Cadastro_Fornecedor.getCbxTipo().getSelectedItem())) {
 			return false;
 		}
+		if(isCPF(painel_Cadastro_Fornecedor.getTxtCpf().getText()) == false) {
+			System.out.println("oi");
+			return false;
+		}
+			
+		
+		
 		return true;
 
+	}
+
+	public boolean isCPF(String cpf) {
+
+		
+		String x = cpf;
+		x = x.replace(".",""); // substitui o ponto por uma String vazia 
+		x = x.replace("-",""); // substitui o traço por uma String vazia 
+		x = x.replace("/",""); // substitui a barra por uma String vazia
+		if (x.equals("00000000000") || x.equals("11111111111") || x.equals("22222222222")
+				|| x.equals("33333333333") || x.equals("44444444444") || x.equals("55555555555")
+				|| x.equals("66666666666") || x.equals("77777777777") || x.equals("88888888888")
+				|| x.equals("99999999999") || x.length() != 11)
+			return (false);
+
+		char dig10, dig11;
+		int sm, i, r, num, peso;
+
+		try {
+			sm = 0;
+			peso = 10;
+			for (i = 0; i < 9; i++) {
+				num = (int) (x.charAt(i) - 48);
+				sm = sm + (num * peso);
+				peso = peso - 1;
+			}
+			r = 11 - (sm % 11);
+			if ((r == 10) || (r == 11))
+				dig10 = '0';
+			else
+				dig10 = (char) (r + 48);
+
+			// Calculo do segundo Digito Verificador
+			sm = 0;
+			peso = 11;
+			for (i = 0; i < 10; i++) {
+				num = (int) (x.charAt(i) - 48);
+				sm = sm + (num * peso);
+				peso = peso - 1;
+			}
+			r = 11 - (sm % 11);
+			if ((r == 10) || (r == 11))
+				dig11 = '0';
+			else
+				dig11 = (char) (r + 48);
+
+			if ((dig10 == x.charAt(9)) && (dig11 == x.charAt(10)))
+				return (true);
+			else
+				return (false);
+		} catch (Exception e) {
+			return (false);
+		}
+	}
+
+	public boolean isCNPJ(String cnpj) {
+		
+		String x = cnpj;
+		x = x.replace(".",""); // substitui o ponto por uma String vazia 
+		x = x.replace("-",""); // substitui o traço por uma String vazia 
+		x = x.replace("/",""); // substitui a barra por uma String vazia
+		if (x.equals("00000000000000") || x.equals("11111111111111") || x.equals("22222222222222")
+				|| x.equals("33333333333333") || x.equals("44444444444444") || x.equals("55555555555555")
+				|| x.equals("66666666666666") || x.equals("77777777777777") || x.equals("88888888888888")
+				|| x.equals("99999999999999") || x.length() != 14)
+			return (false);
+
+		char dig13, dig14;
+		int sm, i, r, num, peso;
+
+		try {
+			// Calculo do primeiro Digito Verificador
+			sm = 0;
+			peso = 2;
+			for (i = 11; i >= 0; i--) {
+				num = (int) (x.charAt(i) - 48);
+				sm = sm + (num * peso);
+				peso = peso + 1;
+				if (peso == 10)
+					peso = 2;
+			}
+
+			r = sm % 11;
+			if ((r == 0) || (r == 1))
+				dig13 = '0';
+			else
+				dig13 = (char) ((11 - r) + 48);
+
+			// Calculo do segundo Digito Verificador
+			sm = 0;
+			peso = 2;
+			for (i = 12; i >= 0; i--) {
+				num = (int) (x.charAt(i) - 48);
+				sm = sm + (num * peso);
+				peso = peso + 1;
+				if (peso == 10)
+					peso = 2;
+			}
+
+			r = sm % 11;
+			if ((r == 0) || (r == 1))
+				dig14 = '0';
+			else
+				dig14 = (char) ((11 - r) + 48);
+
+			if ((dig13 == x.charAt(12)) && (dig14 == x.charAt(13)))
+				return (true);
+			else
+				return (false);
+		} catch (Exception e) {
+			return (false);
+		}
 	}
 
 	public String getTipo() {

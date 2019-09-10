@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Cliente extends Pessoa{
 	
-	private double limite_credito;
+	private String limite_credito;
 	private boolean ativo;
 	private ArrayList <Produto> conta;
 	
@@ -26,13 +26,32 @@ public class Cliente extends Pessoa{
 						
 						String celular,
 						String email,
-						double limite_credito,
+						String limite_credito,
 						boolean ativo,
 						String complemento) {
 		
 		super(codigo,tipo,cpfcnpj,nome,cep, rua, numero,bairro,cidade,uf,telefone, celular,email, complemento);
 		
 		this.ativo = ativo;
+		this.setLimite_credito(limite_credito);
+	}
+	public String getLimite_credito() {
+		return limite_credito;
+	}
+	public void setLimite_credito(String limite_credito) {
 		this.limite_credito = limite_credito;
 	}
+	public boolean isAtivo() {
+		return ativo;
+	}
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
+	public ArrayList<Produto> getConta() {
+		return conta;
+	}
+	public void setConta(ArrayList<Produto> conta) {
+		this.conta = conta;
+	}
+	
 }

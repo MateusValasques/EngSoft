@@ -14,6 +14,7 @@ import controle.FormataMascaras;
 
 import javax.swing.JLabel;
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.Font;
 import javax.swing.JFormattedTextField;
 import javax.swing.JComboBox;
@@ -24,6 +25,7 @@ import java.text.ParseException;
 import java.awt.Button;
 import javax.swing.JButton;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 
 public class painelCadastroForncedor extends JFrame {
@@ -76,14 +78,22 @@ public class painelCadastroForncedor extends JFrame {
 	FormataMascaras fm = new FormataMascaras();
 	private JFormattedTextField txtCnpj;
 	private JLabel lblCnpj;
-	private JButton btnPesquisar;
+	private JButton btnPesquisaNome;
 	private Button btnConfirmar_Alteracao;
 	private Button btnConfirmar_Exclusao;
 	private JTable tabela;
 	private JScrollPane scrollPane;
+	private DefaultTableModel defaultTableModel;
+	private JFormattedTextField txtPesquisaCPF;
+	private JFormattedTextField txtPesquisaCNPJ;
+	private JFormattedTextField txtPesquisaCodigo;
+	private JButton btnPesquisaCPF;
+	private JButton btnPesquisaCNPJ;
+	private JButton btnPesquisaCodigo;
+	private JFormattedTextField formattedTextField;
 
 	public painelCadastroForncedor() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 575, 703);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(153, 255, 204));
@@ -137,10 +147,16 @@ public class painelCadastroForncedor extends JFrame {
 		contentPane.add(getLblComplemento());
 		contentPane.add(getTxtCnpj());
 		contentPane.add(getLblCnpj());
-		contentPane.add(getBtnPesquisar());
 		contentPane.add(getBtnConfirmar_Alteracao());
 		contentPane.add(getBtnConfirmar_Exclusao());
 		contentPane.add(getScrollPane());
+		contentPane.add(getTxtPesquisaCPF());
+		contentPane.add(getTxtPesquisaCNPJ());
+		contentPane.add(getTxtPesquisaCodigo());
+		contentPane.add(getBtnPesquisaNome());
+		contentPane.add(getBtnPesquisaCPF());
+		contentPane.add(getBtnPesquisaCNPJ());
+		contentPane.add(getBtnPesquisaCodigo());
 		getTxtCpf().setVisible(false);
 		getTxtCnpj().setVisible(false);
 	}
@@ -217,7 +233,7 @@ public class painelCadastroForncedor extends JFrame {
 			txtNome = new JFormattedTextField(fm.getNome());
 			txtNome.setEditable(false);
 			txtNome.setColumns(10);
-			txtNome.setBounds(10, 134, 335, 20);
+			txtNome.setBounds(10, 134, 315, 20);
 		}
 		return txtNome;
 	}
@@ -345,7 +361,7 @@ public class painelCadastroForncedor extends JFrame {
 
 	public JFormattedTextField getTxtNumero() {
 		if (txtNumero == null) {
-			txtNumero = new JFormattedTextField(fm.getNumero());
+			txtNumero = new JFormattedTextField();
 			txtNumero.setEditable(false);
 			txtNumero.setColumns(10);
 			txtNumero.setBounds(420, 207, 71, 20);
@@ -404,7 +420,7 @@ public class painelCadastroForncedor extends JFrame {
 
 	public JLabel getLblTelefone() {
 		if (lblTelefone == null) {
-			lblTelefone = new JLabel("Telefone");
+			lblTelefone = new JLabel("Telefone Fixo");
 
 			lblTelefone.setBounds(10, 341, 94, 14);
 		}
@@ -457,8 +473,7 @@ public class painelCadastroForncedor extends JFrame {
 
 	public JFormattedTextField getTxtPesquisa() {
 		if (txtPesquisa == null) {
-			txtPesquisa = new JFormattedTextField();
-			txtPesquisa.setEditable(false);
+			txtPesquisa = new JFormattedTextField(fm.getNome());
 			txtPesquisa.setColumns(10);
 			txtPesquisa.setBounds(111, 457, 310, 20);
 		}
@@ -476,7 +491,6 @@ public class painelCadastroForncedor extends JFrame {
 	public JComboBox getCbxTipoPesquisa() {
 		if (cbxTipoPesquisa == null) {
 			cbxTipoPesquisa = new JComboBox();
-			cbxTipoPesquisa.setEnabled(false);
 			cbxTipoPesquisa.setModel(
 					new DefaultComboBoxModel(new String[] { "-Tipo-", "CPF", "CNPJ", "Nome", "C\u00F3digo" }));
 			cbxTipoPesquisa.setBounds(6, 456, 98, 22);
@@ -495,6 +509,7 @@ public class painelCadastroForncedor extends JFrame {
 	public Button getBtnAlterar() {
 		if (btnAlterar == null) {
 			btnAlterar = new Button("Alterar");
+			btnAlterar.setEnabled(false);
 			btnAlterar.setBounds(115, 639, 70, 22);
 		}
 		return btnAlterar;
@@ -503,6 +518,7 @@ public class painelCadastroForncedor extends JFrame {
 	public Button getBtnExcluir() {
 		if (btnExcluir == null) {
 			btnExcluir = new Button("Excluir");
+			btnExcluir.setEnabled(false);
 			btnExcluir.setBounds(226, 639, 70, 22);
 		}
 		return btnExcluir;
@@ -511,6 +527,7 @@ public class painelCadastroForncedor extends JFrame {
 	public Button getBtnConfirmar() {
 		if (btnConfirmar == null) {
 			btnConfirmar = new Button("Confirmar");
+			btnConfirmar.setEnabled(false);
 			btnConfirmar.setBounds(336, 639, 70, 22);
 		}
 		return btnConfirmar;
@@ -561,18 +578,20 @@ public class painelCadastroForncedor extends JFrame {
 		return lblCnpj;
 	}
 
-	public JButton getBtnPesquisar() {
-		if (btnPesquisar == null) {
-			btnPesquisar = new JButton("Pesquisar");
-			btnPesquisar.setEnabled(false);
-			btnPesquisar.setBounds(431, 456, 112, 23);
+	public JButton getBtnPesquisaNome() {
+		if (btnPesquisaNome == null) {
+			btnPesquisaNome = new JButton("Pesquisar");
+//			btnPesquisaNome.setEnabled(false);
+			btnPesquisaNome.setVisible(false);
+			btnPesquisaNome.setBounds(431, 456, 112, 23);
 		}
-		return btnPesquisar;
+		return btnPesquisaNome;
 	}
 
 	public Button getBtnConfirmar_Alteracao() {
 		if (btnConfirmar_Alteracao == null) {
 			btnConfirmar_Alteracao = new Button("Confirmar");
+			btnConfirmar_Alteracao.setEnabled(false);
 			btnConfirmar_Alteracao.setBounds(336, 639, 70, 22);
 		}
 		return btnConfirmar_Alteracao;
@@ -581,6 +600,7 @@ public class painelCadastroForncedor extends JFrame {
 	public Button getBtnConfirmar_Exclusao() {
 		if (btnConfirmar_Exclusao == null) {
 			btnConfirmar_Exclusao = new Button("Confirmar");
+			btnConfirmar_Exclusao.setEnabled(false);
 			btnConfirmar_Exclusao.setBounds(336, 639, 70, 22);
 		}
 		return btnConfirmar_Exclusao;
@@ -588,21 +608,28 @@ public class painelCadastroForncedor extends JFrame {
 
 	public JTable getTabela() {
 		if (tabela == null) {
-			tabela = new JTable();
-
-			tabela.setModel(new DefaultTableModel(
-				new Object[][] {
-				},
-				new String[] {
-					"ID", "Nome", "CPF/CNPJ"
-				}
-			));
+			tabela = new JTable(getDefaultTableModel());
+			tabela.getTableHeader().setReorderingAllowed(false);
 			tabela.getColumnModel().getColumn(0).setPreferredWidth(110);
 			tabela.getColumnModel().getColumn(1).setPreferredWidth(188);
 			tabela.getColumnModel().getColumn(2).setPreferredWidth(82);
 		}
 		return tabela;
 	}
+
+	public DefaultTableModel getDefaultTableModel() {
+		if (defaultTableModel == null) {
+			defaultTableModel = new DefaultTableModel(new Object[][] {},
+					new String[] { "ID", "Nome", "CPF/CNPJ" }) {
+				public boolean isCellEditable(int row, int column) {
+					return false;
+
+				}
+			};
+		}
+		return defaultTableModel;
+	}
+
 	public JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
@@ -610,5 +637,56 @@ public class painelCadastroForncedor extends JFrame {
 			scrollPane.setViewportView(getTabela());
 		}
 		return scrollPane;
+	}
+	public JFormattedTextField getTxtPesquisaCPF() {
+		if (txtPesquisaCPF == null) {
+			txtPesquisaCPF = new JFormattedTextField(fm.getCPF());
+			txtPesquisaCPF.setColumns(10);
+			txtPesquisaCPF.setBounds(111, 457, 310, 20);
+		}
+		return txtPesquisaCPF;
+	}
+	public JFormattedTextField getTxtPesquisaCNPJ() {
+		if (txtPesquisaCNPJ == null) {
+			txtPesquisaCNPJ = new JFormattedTextField(fm.getCnpj());
+			txtPesquisaCNPJ.setColumns(10);
+			txtPesquisaCNPJ.setBounds(111, 457, 310, 20);
+		}
+		return txtPesquisaCNPJ;
+	}
+	public JFormattedTextField getTxtPesquisaCodigo() {
+		if (txtPesquisaCodigo == null) {
+			txtPesquisaCodigo = new JFormattedTextField();
+			txtPesquisaCodigo.setColumns(10);
+			txtPesquisaCodigo.setBounds(111, 457, 310, 20);
+		}
+		return txtPesquisaCodigo;
+	}
+	public JButton getBtnPesquisaCPF() {
+		if (btnPesquisaCPF == null) {
+			btnPesquisaCPF = new JButton("Pesquisar CP");
+//			btnPesquisaCPF.setEnabled(false);
+			btnPesquisaCPF.setVisible(false);
+			btnPesquisaCPF.setBounds(431, 456, 112, 23);
+		}
+		return btnPesquisaCPF;
+	}
+	public JButton getBtnPesquisaCNPJ() {
+		if (btnPesquisaCNPJ == null) {
+			btnPesquisaCNPJ = new JButton("Pesquisar CN");
+//			btnPesquisaCNPJ.setEnabled(false);
+			btnPesquisaCNPJ.setVisible(false);
+			btnPesquisaCNPJ.setBounds(431, 456, 112, 23);
+		}
+		return btnPesquisaCNPJ;
+	}
+	public JButton getBtnPesquisaCodigo() {
+		if (btnPesquisaCodigo == null) {
+			btnPesquisaCodigo = new JButton("Pesquisar CO");
+//			btnPesquisaCodigo.setEnabled(false);
+			btnPesquisaCodigo.setVisible(false);
+			btnPesquisaCodigo.setBounds(431, 456, 112, 23);
+		}
+		return btnPesquisaCodigo;
 	}
 }

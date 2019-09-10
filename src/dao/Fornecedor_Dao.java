@@ -14,12 +14,19 @@ import javax.swing.table.DefaultTableModel;
 
 import connection.ConnectionFactory;
 import modelo.Fornecedor;
-import visão.Modelo_Tabela;
+//import visão.Modelo_Tabela;
 import visão.painelCadastroForncedor;
 
 public class Fornecedor_Dao {
 
 	private static int valor;
+	static painelCadastroForncedor painel_Cadastro_Forncedor;
+
+	public Fornecedor_Dao(painelCadastroForncedor painel_Cadastro_Forncedor) {
+
+		Fornecedor_Dao.painel_Cadastro_Forncedor = painel_Cadastro_Forncedor;
+
+	}
 
 	public static void create(Fornecedor fornecedor) {
 
@@ -64,25 +71,14 @@ public class Fornecedor_Dao {
 		painelCadastroForncedor painel = new painelCadastroForncedor();
 		Connection con = ConnectionFactory.getConnection();
 		PreparedStatement stat = null;
-		
+
 		try {
-//			stat = con.prepareStatement(
-//					"UPDATE fornecedores SET (nome ,tipo ,cpfcnpj ,cep ,bairro ,rua ,numero"
-//					+ ",cidade ,complemento ,telefone ,celular,email,uf  WHERE idFornecedores)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ");
 			stat = con.prepareStatement(
 					"UPDATE fornecedores SET nome = ?,tipo = ?,cpfcnpj = ?,cep = ?,bairro = ?,rua = ?,numero = ?"
-					+ ",cidade = ?,complemento = ?,telefone = ?,celular = ?,email = ?,uf = ? WHERE idFornecedores = ?");
-			System.out.println(stat);
-//			
-			System.out.println(fornecedor.getCodigo());
-
-			System.out.println(fornecedor.getNome());
-			// System.out.println(fornecedor.getNome());
+							+ ",cidade = ?,complemento = ?,telefone = ?,celular = ?,email = ?,uf = ? WHERE idFornecedores = ?");
 			stat.setString(1, fornecedor.getNome());
 			stat.setString(2, fornecedor.getTipo());
-			// System.out.println(fornecedor.getTipo());
 			stat.setString(3, fornecedor.getCpfcnpj());
-			// System.out.println(fornecedor.getCpfcnpj());
 			stat.setString(4, fornecedor.getCep());
 			stat.setString(5, fornecedor.getBairro());
 			stat.setString(6, fornecedor.getRua());
@@ -94,9 +90,6 @@ public class Fornecedor_Dao {
 			stat.setString(12, fornecedor.getEmail());
 			stat.setString(13, fornecedor.getUf());
 			stat.setInt(14, fornecedor.getCodigo());
-
-		//	stat.execute();
-
 
 			stat.executeUpdate();
 			JOptionPane.showMessageDialog(null, "Atualizado com sucesso");
@@ -110,22 +103,20 @@ public class Fornecedor_Dao {
 		}
 
 	}
-	
-	public static void delete(Fornecedor fornecedor) {
-		painelCadastroForncedor painel = new painelCadastroForncedor();
+	//usado para deletar o fornecedor
+	public static void delete(int codigo) {
 		Connection con = ConnectionFactory.getConnection();
 		PreparedStatement stat = null;
-		
+
 		try {
-			stat = con.prepareStatement(
-					"DELETE FROM fornecedores WHERE idFornecedores = ?");
-			stat.setInt(1, fornecedor.getCodigo());
+			stat = con.prepareStatement("DELETE FROM fornecedores WHERE idFornecedores = ?");
+			stat.setInt(1, codigo);
 			stat.executeUpdate();
 			JOptionPane.showMessageDialog(null, "Excluido com sucesso");
 			stat.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Falha em  excluir " + e);
-			
+
 			e.printStackTrace();
 		} finally {
 			ConnectionFactory.closeConnection(con, stat);
@@ -133,6 +124,7 @@ public class Fornecedor_Dao {
 
 	}
 
+	
 	public static ArrayList<Fornecedor> read() {
 
 		Connection con = ConnectionFactory.getConnection();
@@ -144,7 +136,6 @@ public class Fornecedor_Dao {
 			rs = stat.executeQuery();
 
 			while (rs.next()) {
-
 				Fornecedor fornecedor = new Fornecedor(0, null, null, null, null, null, null, null, null, null, null,
 						null, null, null);
 
@@ -167,7 +158,6 @@ public class Fornecedor_Dao {
 				fornecedores.add(fornecedor);
 
 			}
-			
 
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Falha em  Cadastrar " + e);
@@ -179,35 +169,83 @@ public class Fornecedor_Dao {
 		return fornecedores;
 
 	}
-	public static void read2() {
+
+	// busca todos os fornecedores por nome
+	public static void pesquisa_nome(String nome) {
 
 		Connection con = ConnectionFactory.getConnection();
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		try {
-			stat = con.prepareStatement("select * from fornecedores");
+			// System.out.println("oi");
+			stat = con.prepareStatement("select * from fornecedores WHERE nome LIKE ?");// função para procurar no banco
+																						// de dados
+			nome = nome.trim();// tira os espaços em branco da string
+			stat.setString(1, "%" + nome + "%");// coloca pra procurar o q tem com o q foi enviado da barra
 			rs = stat.executeQuery();
+			while (rs.next()) {
+				//preenche a tabela
+				painel_Cadastro_Forncedor.getDefaultTableModel().addRow(
+						new Object[] { rs.getInt("idFornecedores"), rs.getString("nome"), rs.getString("cpfcnpj") });
+			}
 
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Falha em  Cadastrar " + e);
+			e.printStackTrace();
+		} finally {
+			ConnectionFactory.closeConnection(con, stat, rs);
+		}
+
+	}
+
+	
+	// busca todos os fornecedores por cpf ou cnpj
+	public static void pesquisa_cpf_cnpj(String cpfcnpj) {
+
+		Connection con = ConnectionFactory.getConnection();
+		PreparedStatement stat = null;
+		ResultSet rs = null;
+		try {
+			stat = con.prepareStatement("select * from fornecedores WHERE cpfcnpj LIKE ?");// função para procurar no
+																							// banco de dados
+
+			stat.setString(1, "%" + cpfcnpj + "%");// coloca pra procurar o q tem com o q foi enviado da barra
+			rs = stat.executeQuery();
 			
-			painelCadastroForncedor painel_Cadastro_Forncedor = new painelCadastroForncedor();
-			DefaultTableModel modelo = new DefaultTableModel();
-			painel_Cadastro_Forncedor.getTabela().setModel(modelo); // tableActivities é o nome da minha jTable
-			modelo.addColumn("Coluna 1");
-			modelo.addColumn("Coluna 2");
-			modelo.addColumn("Coluna 3");
-			painel_Cadastro_Forncedor.getTabela().getColumnModel().getColumn(0).setPreferredWidth(100); // Tamanho da Coluna 1
-			painel_Cadastro_Forncedor.getTabela().getColumnModel().getColumn(1).setPreferredWidth(80); // Tamnaho da Coluna 2
-			painel_Cadastro_Forncedor.getTabela().getColumnModel().getColumn(2).setPreferredWidth(190); // Tamanho da Coluna 3
-			System.out.println("oi");
+			while (rs.next()) {
+				
+
+				painel_Cadastro_Forncedor.getDefaultTableModel().addRow(
+						new Object[] { rs.getInt("idFornecedores"), rs.getString("nome"), rs.getString("cpfcnpj") });
+			}
+
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Falha em  Cadastrar " + e);
+			e.printStackTrace();
+		} finally {
+			ConnectionFactory.closeConnection(con, stat, rs);
+		}
+	}
+	
+	//pesquisa por código
+	public static void pesquisa_codigo(int id) {
+
+		Connection con = ConnectionFactory.getConnection();
+		PreparedStatement stat = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			stat = con.prepareStatement("select * from fornecedores WHERE idFornecedores LIKE ?");// função para procurar no
+																							// banco de dados
+
+			stat.setString(1, "%" + id + "%");// coloca pra procurar o q tem com o q foi enviado da barra
+			rs = stat.executeQuery();
+			
 			while (rs.next()) {
 
-				System.out.println("oi");
-
-				int campoBD1 = rs.getInt("idFornecedores");
-				String campoBD2 =rs.getString("nome");
-				String campoBD3 =rs.getString("cpfcnpj");
-
-				modelo.addRow(new Object[] {campoBD1, campoBD2, campoBD3});
+				painel_Cadastro_Forncedor.getDefaultTableModel().addRow(
+						new Object[] { rs.getInt("idFornecedores"), rs.getString("nome"), rs.getString("cpfcnpj") });
 
 			}
 
@@ -218,49 +256,46 @@ public class Fornecedor_Dao {
 			ConnectionFactory.closeConnection(con, stat, rs);
 		}
 
-
 	}
-	
 
-	
-	public void preencher_Tabela() {
-		ArrayList dados = new ArrayList();
-		String[] colunas = new String[] {"id_fornecedor, nome, cpfcnpj"};
+	// busca um único fornecedor pelo ID, aqui busca para enviar pra tela
+	public static Fornecedor busca_simples(int x) {
 		Connection con = ConnectionFactory.getConnection();
 		PreparedStatement stat = null;
-		ResultSet rs = null;
+		Fornecedor fornecedor;
+		fornecedor = new Fornecedor();
 		try {
-			stat = con.prepareStatement("select * from fornecedores");
+			stat = con.prepareStatement("SELECT * FROM fornecedores WHERE idFornecedores = ?");
+			stat.setInt(1, x);
+			ResultSet rs = null;
 			rs = stat.executeQuery();
-			while(rs.next()) {
-				dados.add(new Object[] {rs.getInt("idFornecedores"), rs.getString("nome"),rs.getString("cpfcnpj")});
-				System.out.println(rs.getInt("idFornecedores") + rs.getString("nome") + rs.getString("cpfcnpj"));
+			while (rs.next()) {
+
+				fornecedor.setCodigo(rs.getInt("idFornecedores"));
+				fornecedor.setNome(rs.getString("nome"));
+				fornecedor.setTipo(rs.getString("tipo"));
+				fornecedor.setCpfcnpj(rs.getString("cpfcnpj"));
+				fornecedor.setCep(rs.getString("cep"));
+				fornecedor.setBairro(rs.getString("bairro"));
+				fornecedor.setRua(rs.getString("rua"));
+				fornecedor.setNumero(rs.getString("numero"));
+				fornecedor.setCidade(rs.getString("cidade"));
+				fornecedor.setComplemento(rs.getString("complemento"));
+				fornecedor.setTelefone(rs.getString("telefone"));
+				fornecedor.setCelular(rs.getString("celular"));
+				fornecedor.setEmail(rs.getString("email"));
+
 			}
-			
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Falha em preencher o arrayList " + e);
+
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Falha em  buscar " + e);
+
+			e.printStackTrace();
+		} finally {
+			ConnectionFactory.closeConnection(con, stat);
 		}
-		
-		Modelo_Tabela modelo = new Modelo_Tabela(dados, colunas);
-		painelCadastroForncedor painel_Cadastro_Forncedor = new painelCadastroForncedor();
-		painel_Cadastro_Forncedor.getTabela().setModel(modelo);
-		
-		painel_Cadastro_Forncedor.getTabela().getColumnModel().getColumn(0).setPreferredWidth(80);//tamanho da primeira coluna
-		painel_Cadastro_Forncedor.getTabela().getColumnModel().getColumn(0).setResizable(false);
-		
-		painel_Cadastro_Forncedor.getTabela().getColumnModel().getColumn(1).setPreferredWidth(180);//tamanho da primeira coluna
-		painel_Cadastro_Forncedor.getTabela().getColumnModel().getColumn(1).setResizable(false);
-		
-		painel_Cadastro_Forncedor.getTabela().getColumnModel().getColumn(2).setPreferredWidth(130);//tamanho da primeira coluna
-		painel_Cadastro_Forncedor.getTabela().getColumnModel().getColumn(2).setResizable(false);
-	
-		painel_Cadastro_Forncedor.getTabela().getTableHeader().setReorderingAllowed(false);
-		
-		painel_Cadastro_Forncedor.getTabela().setAutoResizeMode(painel_Cadastro_Forncedor.getTabela().AUTO_RESIZE_OFF);
-		
-		painel_Cadastro_Forncedor.getTabela().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);//pode selecionar apenas 1 elemento da tabela
-		
-	
+		return fornecedor;
+
 	}
 
 }

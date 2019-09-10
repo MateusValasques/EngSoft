@@ -3,17 +3,12 @@ package modelo;
 public class Funcionario extends Pessoa{
 	
 	private boolean cancela_compra;
-	private String rg;
-	private String uf_rg;
 	private String dt_cadastro;
 	private String login;
 	private String senha;
 	private String conta;
 	private String agencia;
-	
-	public Funcionario() {
-		
-	}
+
 	public Funcionario(int codigo,
 						String tipo,
 						String cpfcnpj,
@@ -29,9 +24,6 @@ public class Funcionario extends Pessoa{
 						String email,
 						String complemento,
 						boolean cancela_compra,
-						String rg,
-					    String uf_rg,
-				 	    String dt_cadastro,
 				 	    String login,
 				 	    String senha,
 					    String conta,
@@ -39,12 +31,58 @@ public class Funcionario extends Pessoa{
 		
 		super(codigo,tipo,cpfcnpj,nome,cep, rua, numero,bairro,cidade,uf,telefone, celular,email, complemento);
 		this.cancela_compra = cancela_compra;
-		this.rg = rg;
-		this.uf_rg = uf_rg;
-		this.dt_cadastro = dt_cadastro;
 		this.login = login;
 		this.senha = senha;
 		this.conta = conta;
 		this.agencia = agencia;
 	}
+
+	public boolean getCancela_compra() {
+		return cancela_compra;
+	}
+
+	public void setCancela_compra(boolean cancela_compra) {
+		this.cancela_compra = cancela_compra;
+	}
+
+	public String getDt_cadastro() {
+		return dt_cadastro;
+	}
+
+	public void setDt_cadastro(String dt_cadastro) {
+		this.dt_cadastro = dt_cadastro;
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	public String getConta() {
+		return conta;
+	}
+
+	public void setConta(String conta) {
+		this.conta = conta;
+	}
+
+	public String getAgencia() {
+		return agencia;
+	}
+
+	public void setAgencia(String agencia) {
+		this.agencia = agencia;
+	}
+	
 }

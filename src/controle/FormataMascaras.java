@@ -53,8 +53,15 @@ public class FormataMascaras {
 			}
 		}
 		
-		
-		
+		else if(opcao == 4){
+			try{
+				mascara = new MaskFormatter("*******************************************************************");
+				mascara.setValidCharacters(" 0123456789.,");
+			}catch(ParseException exc){
+				System.out.println(exc.getMessage());
+				exc.printStackTrace();
+			}
+		}	
 	}
 	
 	// construtor que recebe uma String para o formato da máscara
@@ -62,8 +69,17 @@ public class FormataMascaras {
 	
 	
 	// retorna máscara CPF
+	
+	public DefaultFormatterFactory getDinheiro() {
+		Formata("", 4);
+		return new DefaultFormatterFactory(mascara);
+	}
 	public DefaultFormatterFactory getCPF() {
 		Formata("###.###.###-##", 1);
+		return new DefaultFormatterFactory(mascara);
+	}
+	public DefaultFormatterFactory getConta(){
+		Formata("#####-#", 1);
 		return new DefaultFormatterFactory(mascara);
 	}
 	
